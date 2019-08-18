@@ -1,0 +1,106 @@
+{% load render_table from django_tables2 %}
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>My site</title>
+</head>
+<body>
+
+<form action="/new" method="post">
+
+    <fieldset>
+        <legend><b>Cost calculator</b></legend>
+        <table>
+            <tr>
+                <th><label for="date">Date:</label></th>
+                <td><input type="date" name="date" id="date"/></td>
+            </tr>
+
+
+            <tr>
+                <th>
+                    <label for="group">Group:</label></th>
+                <th>
+                    <input type="text" name="group" id="group" list="group_list">
+                    <datalist id="group_list">
+                        <option>Car</option>
+                        <option>Food</option>
+                        <option>Close</option>
+                        <option>Other</option>
+
+                    </datalist>
+                </th>
+
+            </tr>
+
+
+            <tr>
+                <th>
+                    <label for="subgroup">Subgroup:</label></th>
+                <th>
+                    <input type="text" name="subgroup" id="subgroup" list="subgroup_list">
+                    <datalist id="subgroup_list">
+                        <option>Fuel</option>
+                        <option>Repair</option>
+                        <option>Tires</option>
+                        <option>Wheels</option>
+                        <option>Milkl</option>
+                        <option>Chocolate</option>
+                        <option>Bread</option>
+                        <option>Grocery</option>
+
+                    </datalist>
+                </th>
+
+            </tr>
+
+
+            <tr>
+                <th><label for="amount">Amount:</label></th>
+                <td><input type="number" name="amount" required id="amount"/></td>
+            </tr>
+        </table>
+
+        <p><input type="submit" value="Submit">
+            <input type="reset" value="Clear"></p>
+    </fieldset>
+</form>
+
+
+<table border="1" style="border-collapse: collapse; width: 100%;">
+    <tbody>
+    <tr>
+        <th>Remove</th>
+        <th>Create</th>
+        <th>Group</th>
+        <th>Subgroup</th>
+        <th>Amount</th>
+    </tr>
+    {% for item in records %}
+    <tr>
+        <th scope="col" class="action-checkbox-column" style="width: 3%; text-align: left;">
+            <div class="text">
+
+                <form action="/{{ item.id}}" method="delete"><button type="submit">del</button></form></div>
+            <div class="clear"></div>
+        </th>
+
+
+        <td style="width: 22%; text-align: center;">{{ item.date }}</td>
+        <td style="width: 26%; text-align: center;">{{ item.group }}</td>
+        <td style="width: auto; text-align: center;">{{ item.subgroup }}</td>
+        <td style="width: auto; text-align: center;">{{ item.amount }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+<table>
+    <td><tb><b>{{ total_amount }}</b></tb></td>
+</table>
+</body>
+</html>
+
