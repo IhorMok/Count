@@ -1,7 +1,7 @@
 {% load render_table from django_tables2 %}
 {% load static %}
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -47,7 +47,7 @@
                         <option>Repair</option>
                         <option>Tires</option>
                         <option>Wheels</option>
-                        <option>Milkl</option>
+                        <option>Milk</option>
                         <option>Chocolate</option>
                         <option>Bread</option>
                         <option>Grocery</option>
@@ -70,37 +70,68 @@
 </form>
 
 
+<!--FORM TO FILTER  -->
+<form action="/" method="get">
+    <label for="from"> From </label>
+    <input type="date" name="from" id="from"/>
+    <label for="to"> To </label>
+    <input type="date" name="to" id="to"/>
+    <br>
+    <p>
+        <select>
+            <option>Date</option>
+            <option>Period</option>
+            <option>Group</option>
+        </select>
+    <p><input type="submit" value="Submit">
+        <input type="reset" value="Clear"></p>
+</form>
+
+
+<!--END-->
+
+
 <table border="1" style="border-collapse: collapse; width: 100%;">
     <tbody>
     <tr>
         <th>Remove</th>
-        <th>Create</th>
+        <th><a href="?order={% if order == 'date' %}-date{% else %}date{% endif %}">Create</a></th>
         <th>Group</th>
         <th>Subgroup</th>
         <th>Amount</th>
     </tr>
+
     {% for item in records %}
+
     <tr>
+
         <th scope="col" class="action-checkbox-column" style="width: 3%; text-align: left;">
             <div class="text">
-
-                <form action="/{{ item.id}}" method="delete"><button type="submit">del</button></form></div>
+                <form action="/{{ item.id}}" method="delete">
+                    <button type="submit">del</button>
+                </form>
+            </div>
             <div class="clear"></div>
         </th>
-
 
         <td style="width: 22%; text-align: center;">{{ item.date }}</td>
         <td style="width: 26%; text-align: center;">{{ item.group }}</td>
         <td style="width: auto; text-align: center;">{{ item.subgroup }}</td>
         <td style="width: auto; text-align: center;">{{ item.amount }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
+        </tr>
+        {% endfor %}
 
+
+    </tbody>
 </table>
+
+
 <table>
-    <td><tb><b>{{ total_amount }}</b></tb></td>
+    <td>
+        <b>{{ total_amount }}</b>
+    </td>
 </table>
 </body>
 </html>
 
+<!-- for item in sor_date -->

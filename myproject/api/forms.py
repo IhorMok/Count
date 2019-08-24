@@ -10,6 +10,18 @@ class PostForm(forms.Form):
     subgroup = forms.CharField()
     amount = forms.IntegerField()
 
+##FILTER
+# class AccountRecordFilter(forms.Form):
+#     date_from = forms.DateField()
+#     date_to = forms.DateField()
+
+
+
+
+
+
+
+
 
 
 # class PostForm(forms.ModelForm):

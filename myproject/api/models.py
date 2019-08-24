@@ -11,5 +11,3 @@ class AccountantRecord(models.Model):
 
     class Meta:
         db_table = "Accountant_record"
-
-

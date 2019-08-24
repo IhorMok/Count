@@ -9,7 +9,6 @@ from .views import accountant_record, \
 
 
 
-
 urlpatterns = [
     path('', accountant_record),
     path('new', accountant_record_new),
@@ -22,3 +21,6 @@ urlpatterns = [
 
     #path('index/', include('api.accountant_record')),
 ]
+
+
+####сделать input в FROM and TO
