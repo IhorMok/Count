@@ -26,16 +26,15 @@
                 <th>
                     <input type="text" name="group" id="group" list="group_list">
                     <datalist id="group_list">
-                        <option>Car</option>
-                        <option>Food</option>
-                        <option>Close</option>
-                        <option>Other</option>
+
+                        {% for i in groups %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
 
                     </datalist>
                 </th>
 
             </tr>
-
 
             <tr>
                 <th>
@@ -43,14 +42,10 @@
                 <th>
                     <input type="text" name="subgroup" id="subgroup" list="subgroup_list">
                     <datalist id="subgroup_list">
-                        <option>Fuel</option>
-                        <option>Repair</option>
-                        <option>Tires</option>
-                        <option>Wheels</option>
-                        <option>Milk</option>
-                        <option>Chocolate</option>
-                        <option>Bread</option>
-                        <option>Grocery</option>
+
+                        {% for i in subgroups %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
 
                     </datalist>
                 </th>
@@ -73,15 +68,17 @@
 <!--FORM TO FILTER  -->
 <form action="/" method="get">
     <label for="from"> From </label>
-    <input type="date" name="from" id="from"/>
+    <input type="date" name="from" id="from" value='{{ start_date|date:"Y-m-d"}}' />
     <label for="to"> To </label>
-    <input type="date" name="to" id="to"/>
+    <input type="date" name="to" id="to" value='{{ end_date|date:"Y-m-d"}}' />
     <br>
     <p>
-        <select>
-            <option>Date</option>
-            <option>Period</option>
-            <option>Group</option>
+        <select name="filter_group">
+            <option value="" >All</option>
+            {% for i in groups %}
+            <option value="{{ i }}" {% if i == filter_group %}selected="selected" {% endif %}> {{ i }}</option>
+            {% endfor %}
+
         </select>
     <p><input type="submit" value="Submit">
         <input type="reset" value="Clear"></p>
@@ -96,7 +93,7 @@
     <tr>
         <th>Remove</th>
         <th><a href="?order={% if order == 'date' %}-date{% else %}date{% endif %}">Create</a></th>
-        <th>Group</th>
+        <th><a href="?order={% if order == 'group' %}-group{% else %}group{% endif %}">Group</a></th>
         <th>Subgroup</th>
         <th>Amount</th>
     </tr>

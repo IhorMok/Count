@@ -8,27 +8,31 @@ from django.db.models import Sum
 
 def accountant_record(request):
     order = request.GET.get('order', '-date')
-
-    start_date = datetime.now().replace(day=1).strftime('%Y-%m-%d')
-    if 'from' in request.GET:
+    start_date = datetime.now().replace(day=1)
+    if 'from' in request.GET and request.GET['from'] != "":
         start_date = request.GET['from']
         start_date = datetime.strptime(start_date, '%Y-%m-%d')
-
-
     end_date = datetime.now().strftime('%Y-%m-%d')
     if 'to' in request.GET and request.GET['to'] != "":
         end_date = request.GET['to']
         end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
     records = AccountantRecord.objects.filter(date__range=(start_date, end_date)).order_by(order)
+    filter_group = ""
+    if 'filter_group' in request.GET and request.GET['filter_group'] != "":
+        filter_group = request.GET["filter_group"]
+        records = records.filter(group=filter_group)
 
     total_amount = AccountantRecord.objects.aggregate(Total_amount=Sum('amount'))
 
+    groups = AccountantRecord.objects.values_list('group', flat=True).distinct().order_by('group')
+    subgroups = AccountantRecord.objects.values_list('subgroup', flat=True).distinct().order_by('subgroup')
+
     return render(request, 'list.html', locals())
 
-# С request вытянуть параметры формы и создать "accountant_record_new"
 
-# ТУТ ВОПРОС ПО ""rec"""
+
+
 def accountant_record_new(request):
     rec = AccountantRecord.objects.create(date=request.POST['date'],
                                           group=request.POST['group'],
@@ -42,35 +46,3 @@ def account_record_delete(request, id):
     return redirect("/")
 
 
-#FILTER
-# def account_record_filter(request):
-#     arf = accountant_record_new.objects.order_by('group')
-#     return redirect("/")
-
-#SORTED Это для того чтобы изначально отсортировать всю таблицу по дате записи,а похже сделать для периода и группы затрат
-
-
-
-#### Фильтрация за текущий месяц вроде бы
-#MyModel.objects.filter(My_DATE_FIELD__date=timezone.now()
-
-
-
-
-
-
-
-
-
-
-
-
-# # django views redirect user /"on main page"
-# def redirect_views(request):
-#     response = redirect('/new/redirect')
-#     return response
-
-# # ЗАЧЕМ ЭТО СЮДА ПИСАТЬ ЕСЛИ САЙТ И БЕЗ ЭТОГО ВИДИТ ФОРМУ ??????!!!!!1
-# def accountant_record(request):
-#     records = PostForm()
-#     return render(request, 'list.html', locals())
