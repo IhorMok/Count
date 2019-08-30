@@ -23,15 +23,17 @@ def accountant_record(request):
         filter_group = request.GET["filter_group"]
         records = records.filter(group=filter_group)
 
+    date = datetime.now()
+    if 'date' in request.GET and request.GET['date'] == "":
+        date = request.GET['date']
+        date = datetime.strftime(date, "%Y-%m-%d")
+
     total_amount = AccountantRecord.objects.aggregate(Total_amount=Sum('amount'))
 
     groups = AccountantRecord.objects.values_list('group', flat=True).distinct().order_by('group')
     subgroups = AccountantRecord.objects.values_list('subgroup', flat=True).distinct().order_by('subgroup')
 
     return render(request, 'list.html', locals())
-
-
-
 
 def accountant_record_new(request):
     rec = AccountantRecord.objects.create(date=request.POST['date'],
